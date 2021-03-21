@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <meta name="msapplication-tap-highlight" content="no"><!-- 安卓系统强制竖屏 -->
+<title>种树</title>
+<link rel="stylesheet" href="./css/index.css">
+<script type="text/javascript" src="./vue.js"></script>
+<script type="text/javascript" src = "https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<!-- 最外层APP -->
+<div id="myapp">
+
+<!-- 活动列表 -->	
+<ul class="activity-loop">
+	<activity-item
+		v-for="ac in activities"
+		v-bind:item="ac"
+		v-on:ac-click="acClick(ac.name)"
+	></activity-item>
+</ul>
+
+<!-- 底部菜单 -->
+<div class="menu">
+	<ul class="menu-loop">
+		<menu-item
+			v-for="menu in menus"
+			v-bind:item="menu"
+			v-on:menu-click="menuClick(menu.name)"
+		></menu-item>
+	</ul>
+	<div class="user-water" @click="watering">
+		<p><span>{{waterCount}}</span>g</p>
+	</div>
+</div>
+
+<!-- 中间 树 浇水进度条 -->
+<div class="center">
+	<div class="tree"></div>
+	<myProgress v-bind:item="bar"></myProgress>
+	<p class="count-water" v-if="treeChange">芒果树结果了！</p>
+	<p class="count-water" v-else>再浇水<span>{{needToWatering}}</span>次，芒果树就<span>{{levelRes}}</span>了哦！</p>
+</div>
+
+<!-- 底部 -->
+<div class="footer">
+	<div class="friend-wrap">
+		<ul class="friend-list">
+			<friend-item 
+				v-for="friend in friends"
+				v-bind:item="friend"
+				v-on:friend-click="friendClick(friend.nickname)"
+			></friend-item>
+		</ul>
+		<div class="friend-control">
+			<div class="reduce-friend-wrap">
+				<img class="reduce-friend" src="./images/reduce-friend.png"/>
+				<p>删除好友</p>
+			</div>
+			<div class="add-friend-wrap">
+				<img class="add-friend" src="./images/add-friend.png"/>
+				<p>添加好友</p>
+			</div>
+		</div>
+	</div>
+	<div class="search">
+		<img src="./images/search.png" alt=""/>
+		<p>扫描好友</p>
+	</div>
+</div>
+
+<!-- 遮罩层 -->
+<div v-show="zhezhao" class="zhezhao"></div>
+
+<!-- 签到活动panel -->
+<sign-panel v-show="signAcSwitch" v-on:sign-x="signX"></sign-panel>
+
+<!-- 领水滴panel -->
+<div v-show="getWaterPanelSwitch" class="getWater-panel">
+	<div class="getWater-header">
+		<div>领水滴</div>
+		<div @click="getWaterPanelX()" class="getWater-x"></div>
+	</div>
+	<div class="getWater-sign-wrap">
+		<p>连续签到领奖励</p>
+		<div class="getWater-sign-progress-wrap">
+			<div class="getWater-sign-progress">
+				<div class="getWater-sign-progress-cover" v-bind:style="{width:getWaterSignDaysProgress}"></div>
+			</div>
+			<ul class="getWater-sign-progress-award">
+				<li is="getWater-sign-progress-award-item" v-for="item in getWaterSignDaysAward" v-bind:item="item"></li>
+			</ul>
+			<ul class="getWater-sign-progress-button-wrap">
+				<li is="getWater-sign-progress-button-item" v-for="btn in getWaterSignDaysBtns" v-bind:item="btn"></li>	
+			</ul>
+		</div>
+	</div>
+	<ul class="get-water-panel-ac">
+		<get-water-panel-ac-frist></get-water-panel-ac-frist>
+	</ul>
+</div>
+
+</div>
+<script src="./js/component.js"></script>
+<script src="./js/myapp.js"></script>
+<script type="text/javascript">
+//字体大小即rem单位自适应
+document.documentElement.style.fontSize =document.documentElement.clientWidth/750*40 +"px";
+
+
+</script>
+
+</body>
+</html>
